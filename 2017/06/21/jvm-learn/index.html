@@ -16,13 +16,16 @@
     
     
 
-    <meta property="og:type" content="article">
+    <meta name="description" content="虚拟机栈&amp;emsp;&amp;emsp;Java虚拟机栈是线程私有的，生命周期和线程相同，描述Java方法执行的内存模型。每个方法在执行的时候都会创建一个“栈帧”用于存储局部变量表、操作数栈、动态链接、方法出口等信息。每个方法被调用直至完成的过程，就对应着一个栈帧在虚拟机栈中入栈道出栈的过程。&amp;emsp;&amp;emsp;其中，虚拟机栈的局部变量表存放编译器各种可知的基本数据类型、对象引用和returnAddr">
+<meta property="og:type" content="article">
 <meta property="og:title" content="JAVA内存模型 | 爱杨 - 奔跑的小胖">
 <meta property="og:url" content="http://yoursite.com/2017/06/21/jvm-learn/index.html">
 <meta property="og:site_name" content="爱杨 - 奔跑的小胖">
-<meta property="og:updated_time" content="2017-06-21T09:43:34.000Z">
+<meta property="og:description" content="虚拟机栈&amp;emsp;&amp;emsp;Java虚拟机栈是线程私有的，生命周期和线程相同，描述Java方法执行的内存模型。每个方法在执行的时候都会创建一个“栈帧”用于存储局部变量表、操作数栈、动态链接、方法出口等信息。每个方法被调用直至完成的过程，就对应着一个栈帧在虚拟机栈中入栈道出栈的过程。&amp;emsp;&amp;emsp;其中，虚拟机栈的局部变量表存放编译器各种可知的基本数据类型、对象引用和returnAddr">
+<meta property="og:updated_time" content="2017-06-29T07:07:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JAVA内存模型 | 爱杨 - 奔跑的小胖">
+<meta name="twitter:description" content="虚拟机栈&amp;emsp;&amp;emsp;Java虚拟机栈是线程私有的，生命周期和线程相同，描述Java方法执行的内存模型。每个方法在执行的时候都会创建一个“栈帧”用于存储局部变量表、操作数栈、动态链接、方法出口等信息。每个方法被调用直至完成的过程，就对应着一个栈帧在虚拟机栈中入栈道出栈的过程。&amp;emsp;&amp;emsp;其中，虚拟机栈的局部变量表存放编译器各种可知的基本数据类型、对象引用和returnAddr">
     
     
     
@@ -172,7 +175,15 @@ classes that you can use:
   </header>
 
   <section id="post-content" class="article-content post">
-    
+    <h2 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h2><p>&emsp;&emsp;Java虚拟机栈是线程私有的，生命周期和线程相同，描述Java方法执行的内存模型。每个方法在执行的时候都会创建一个“栈帧”用于存储局部变量表、操作数栈、动态链接、方法出口等信息。每个方法被调用直至完成的过程，就对应着一个栈帧在虚拟机栈中入栈道出栈的过程。<br>&emsp;&emsp;其中，虚拟机栈的局部变量表存放编译器各种可知的基本数据类型、对象引用和returnAddress类型。局部变量表所需的内存空间会在编译期间完成分配，在方法运行期间不会改变局部变量表的大小。</p>
+<h2 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h2><p>&emsp;&emsp;与虚拟机栈基本类似，区别在于虚拟机栈为虚拟机执行的java方法服务，而本地方法栈则是为Native方法服务。</p>
+<h2 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h2><p>&emsp;&emsp;记录当前线程所执行的字节码的行号指示器，是线程私有的。</p>
+<h2 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h2><p>&emsp;&emsp;方法区是各个线程共享的内存区域，用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。默认最小值为16MB，最大值为64MB，可以通过-XX:PermSize和-XX:MaxPermSize参数限制方法区的大小。<br>&emsp;&emsp;运行时常量池：Class文件中的常量池信息，用于存放编译器生成的各种字面量和符号引用，这部分内容会在类加载后放倒方法区的运行时常量池中。</p>
+<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><p>&emsp;&emsp;也叫做java 堆、GC堆是java虚拟机所管理的内存中最大的一块内存区域，也是被各个线程共享的内存区域，<em>在JVM启动时创建</em>。<br>&emsp;&emsp;该内存区域存放了对象实例及数组(所有new的对象)。其大小通过-Xms(最小值)和-Xmx(最大值)参数设置。-Xms为JVM启动时申请的最小内存，默认为操作系统物理内存的1/64但小于1G，-Xmx为JVM可申请的最大内存，默认为物理内存的1/4但大于1G。<br>&emsp;&emsp;默认当空余堆内存小于40%时，JVM会增大Heap到-Xmx指定的大小，可通过-XX:MinHeapFreeRation=来指定这个比列；当空余堆内存大于70%时，JVM会减小heap的大小到-Xms指定的大小，可通过XX:MaxHeapFreeRation=来指定这个比例。一般情况下，对于运行系统，<em>为避免在运行时频繁调整Heap的大小，通常-Xms与-Xmx的值设成一样</em>。<br>&emsp;&emsp;堆被划分为新生代和老年代，现在收集器一般都是采用分代收集算法。新生代主要存储新创建的对象和尚未进入老年代的对象。老年代存储经过多次新生代GC(Minor GC)任然存活的对象。</p>
+<h4 id="新生代："><a href="#新生代：" class="headerlink" title="新生代："></a>新生代：</h4><p>&emsp;&emsp;程序新创建的对象都是从新生代分配内存，新生代由Eden Space和两块相同大小的Survivor Space(通常又称S0和S1或From和To)构成，可通过-Xmn参数来指定新生代的大小，也可以通过-XX:SurvivorRation来调整Eden Space及Survivor Space的大小。</p>
+<h4 id="老年代："><a href="#老年代：" class="headerlink" title="老年代："></a>老年代：</h4><p>&emsp;&emsp;用于存放经过多次新生代GC任然存活的对象，例如缓存对象，新建的对象也有可能直接进入老年代，主要有两种情况：大对象，可通过启动参数设置-XX:PretenureSizeThreshold=1024(单位为字节，默认为0)来代表超过多大时就不在新生代分配，而是直接在老年代分配；大的数组对象，切数组中无引用外部对象。<br>&emsp;&emsp;老年代所占的内存大小为-Xmx对应的值减去-Xmn对应的值。</p>
+<h2 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h2><p>&emsp;&emsp;直接内存并不是虚拟机内存的一部分，也不是Java虚拟机规范中定义的内存区域。jdk1.4中新加入的NIO，引入了通道与缓冲区的IO方式，它可以调用Native方法直接分配堆外内存，这个堆外内存就是本机内存，不会影响到堆内存的大小。</p>
+
   </section>
 
   <section class="post-comments">
